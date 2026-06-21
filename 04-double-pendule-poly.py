@@ -71,10 +71,7 @@ ax.set_xlim(-2.5, 2.5)
 ax.set_ylim(-2, 1)
 fig.tight_layout()
 
-lines = [
-    ax.plot([], [], "o-", lw=3, markersize=20)[0]
-    for res in res_list
-]
+lines = [ax.plot([], [], "o-", lw=3, markersize=20)[0] for res in res_list]
 
 
 def init():
@@ -83,11 +80,17 @@ def init():
     return lines
 
 
+coords = []
+for res in res_list:
+    x1 = L1 * sin(res[:, 0])
+    y1 = -L1 * cos(res[:, 0])
+    x2 = L2 * sin(res[:, 2]) + x1
+    y2 = -L2 * cos(res[:, 2]) + y1
+    coords.append((x1, y1, x2, y2))
+
+
 def animate(i):
-    print("Computing frame", i)
-    for line, res in zip(lines, res_list):
-        x1, y1 = L1 * sin(res[:, 0]), -L1 * cos(res[:, 0])
-        x2, y2 = L2 * sin(res[:, 2]) + x1, -L2 * cos(res[:, 2]) + y1
+    for line, (x1, y1, x2, y2) in zip(lines, coords):
         line.set_data([0, x1[i], x2[i]], [0, y1[i], y2[i]])
     return lines
 
