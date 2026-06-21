@@ -5,12 +5,10 @@
 
 A simple example of an animated plot... In 3D!
 """
+
 import numpy as np
 import matplotlib.pyplot as plt
-import mpl_toolkits.mplot3d.axes3d as p3
 import matplotlib.animation as animation
-
-plt.rcParams['animation.ffmpeg_path'] = r'/Volumes/Data/Youtube/[ffmpeg]/ffmpeg'
 
 
 def Gen_RandLine(length, dims=2):
@@ -27,7 +25,7 @@ def Gen_RandLine(length, dims=2):
         # movement is small compared to position.
         # subtraction by 0.5 is to change the range to [-0.5, 0.5]
         # to allow a line to move backwards.
-        step = ((np.random.rand(dims) - 0.5) * 0.1)
+        step = (np.random.rand(dims) - 0.5) * 0.1
         lineData[:, index] = lineData[:, index - 1] + step
 
     return lineData
@@ -40,9 +38,10 @@ def update_lines(num, dataLines, lines):
         line.set_3d_properties(data[2, :num])
     return lines
 
+
 # Attaching 3D axis to the figure
 fig = plt.figure()
-ax = p3.Axes3D(fig)
+ax = fig.add_subplot(111, projection="3d")
 
 # Fifty lines of random 3-D lines
 data = [Gen_RandLine(25, 3) for index in range(50)]
@@ -53,20 +52,23 @@ lines = [ax.plot(dat[0, 0:1], dat[1, 0:1], dat[2, 0:1])[0] for dat in data]
 
 # Setting the axes properties
 ax.set_xlim3d([0.0, 1.0])
-ax.set_xlabel('X')
+ax.set_xlabel("X")
 
 ax.set_ylim3d([0.0, 1.0])
-ax.set_ylabel('Y')
+ax.set_ylabel("Y")
 
 ax.set_zlim3d([0.0, 1.0])
-ax.set_zlabel('Z')
+ax.set_zlabel("Z")
 
-ax.set_title('3D Test')
+ax.set_title("3D Test")
 
 # Creating the Animation object
-ani = animation.FuncAnimation(fig, update_lines, 25, fargs=(data, lines),
-                                   interval=50, blit=False)
-writer = animation.FFMpegWriter(fps=25, bitrate=500)
+ani = animation.FuncAnimation(
+    fig, update_lines, 25, fargs=(data, lines), interval=50, blit=False
+)
 
-ani.save('anim.mp4', writer = writer)
+# Uncomment to save the video
+# writer = animation.FFMpegWriter(fps=25, bitrate=500)
+# ani.save("anim.mp4", writer=writer)
+
 plt.show()
