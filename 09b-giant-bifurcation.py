@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 FIGSIZE = (16, 9)
-DPI = 120  # 240 For 4K, 80 for 720p
+DPI = 1200  # 240 For 4K, 80 for 720p
 
 
 def simulogi(x0, N, R):
@@ -16,10 +16,10 @@ def simulogi(x0, N, R):
     return x
 
 
-N = 300
-Imin = 100  # plot starting at this iteration
+N = 600
+Imin = 200  # plot starting at this iteration
 x0 = 0.37
-rlist = np.arange(1, 4, 0.001)
+rlist = np.arange(1, 4, 0.0001)
 
 rs = []
 xs = []
@@ -30,14 +30,10 @@ for r in rlist:
 
 
 fig = plt.figure(figsize=FIGSIZE, dpi=DPI)
-plt.rc("font", size=20)
 # lines = [plt.plot([r]*(N-Imin),x[Imin:],'.k',markersize=1) for x,r in zip(res,rlist)]
-plt.plot(rs, xs, ".b", markersize=1)
-plt.xlim(1, 4)
-plt.ylim(0, 1)
+plt.plot(rs, xs, ".k", markersize=0.2)
 plt.tight_layout()
-
-plt.savefig("09-bifurcation.png")
+plt.savefig("09b-bifurcation_géante.png")
 
 # def init():
 #    for line,x in zip(lines,res):
@@ -54,5 +50,4 @@ plt.savefig("09-bifurcation.png")
 # ani = animation.FuncAnimation(fig, animate, np.arange(0, N),init_func = init,blit=False)
 # writer = animation.FFMpegWriter(fps=5, bitrate=5000)
 # ani.save('08-logistique_R3.56o.mp4', writer = writer, dpi=DPI)
-
-plt.show()
+# plt.show()
